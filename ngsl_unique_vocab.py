@@ -1,5 +1,5 @@
 """
-Take a text document and filter the ngsl out, then sort by word frequency.
+Take a text document and filter the ngsl words out, then sort by word frequency.
 
 Used to identify an author's unique vocabulary
 """
