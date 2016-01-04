@@ -8,7 +8,7 @@ Tends to also get tons of proper nouns.
 import pprint
 import csv
 
-PUNCTUATION = '\'";:,.?!'
+PUNCTUATION = '\'";:,.?!()[]{}*-_'
 
 MANUAL_WORD_FILTER = [  "i'll",
         "thou" ]
