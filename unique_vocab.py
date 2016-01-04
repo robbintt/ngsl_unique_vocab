@@ -2,8 +2,10 @@
 Take a text document and filter the ngsl words out, then sort by word frequency.
 
 Used to identify an author's unique vocabulary
+
+Tends to also get tons of proper nouns.
 """
-import pickle
+import pprint
 import csv
 
 PUNCTUATION = '\'";:,.?!'
@@ -42,7 +44,6 @@ def filter_excluded_words(wordfreq_dict, words_to_filter, MANUAL_FILTER=MANUAL_W
 
 if __name__ == "__main__":
     """
-    this is like a main() method
     """
 
     source_file = "sources/complete-shakespeare.txt"
@@ -64,5 +65,4 @@ if __name__ == "__main__":
     filtered_wordfreq_dict = filter_excluded_words(wordfreq_dict, ngsl)
 
     wordfreq_list = sorted([(v, k) for k, v in filtered_wordfreq_dict.iteritems()])[::-1]
-    print wordfreq_list[0:20]
-
+    pprint.pprint(wordfreq_list)
