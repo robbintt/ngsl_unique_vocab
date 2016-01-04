@@ -1,9 +1,16 @@
 """
-Demonstrate the open() builtin method and show some 
-example of what we can do with the resulting object.
+Take a text document and filter the ngsl out, then sort by word frequency.
+
+Used to identify an author's unique vocabulary
 """
 import pickle
 import csv
+
+PUNCTUATION = '\'";:,.?!'
+
+MANUAL_WORD_FILTER = [  "i'll",
+        "thou" ]
+
 
 def make_wordfreq_dict(contents):
     """ return a lowercase word frequency dict from a raw string containing the text
@@ -12,18 +19,20 @@ def make_wordfreq_dict(contents):
 
     wordfreq_dict = dict()
     for word in words:
-        word = word.lower()
+        word = word.lower().strip()
+        word = word.strip(PUNCTUATION)
         times = wordfreq_dict.get(word, 0) + 1
         wordfreq_dict[word] = times
 
     return wordfreq_dict
 
 
-def filter_excluded_words(wordfreq_dict, words_to_filter):
+def filter_excluded_words(wordfreq_dict, words_to_filter, MANUAL_FILTER=MANUAL_WORD_FILTER):
     """ return a filtered wordfreq_dict 
 
     filter out any keys that are in words_to_filter
     """
+    words_to_filter.extend(MANUAL_FILTER)
     for word in words_to_filter:
         if word in wordfreq_dict.keys():
             del wordfreq_dict[word]
@@ -36,31 +45,19 @@ if __name__ == "__main__":
     this is like a main() method
     """
 
-    source_file = "mm.txt"
+    source_file = "sources/complete-shakespeare.txt"
 
-    """
-    # list of words in the ngsl
-    with open('ngsl.pickle') as f:
-        ngsl = pickle.load(f)
-    """
-
-    """
-    with open('fullngsl.csv') as f:
-        ngslraw = f.read()
-    ngsl = ngslraw.split()
-    """
+    ngsl_source = "ngsl/ngsl-lemma.csv"
 
     ngsl = ""
-    with open('ngsl-lemma.csv') as f:
+    with open(ngsl_source) as f:
         ngslreader = csv.reader(f)
         for row in ngslreader:
             ngsl += ' '.join(row)
     ngsl = ngsl.split()
     ngsl = [word.lower() for word in ngsl]
 
-    # document to analyze for vocabulary
-    mode = 'r'
-    with open(source_file, mode) as f:
+    with open(source_file) as f:
         contents = f.read()
 
     wordfreq_dict = make_wordfreq_dict(contents)
